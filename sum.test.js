@@ -22,10 +22,66 @@ test('one is truthy', () => {
     const n = 1;
     expect(n).toBeTruthy();
 });
-*/
 
 test('one is truthy', () => {
     const n = 1;
     expect(n).toThrow();
 });
 
+const myFunction = require('./sum')
+test('throws on invalid input', () => {
+    expect(() => {
+        myFunction('fdfdsf');
+    }).toThrow();
+})
+
+const fetchData = require("./sum");
+
+test('the data is peanut butter', done => {
+    function callback(data) {
+        try {
+            expect(data).toBe('peanut butter');
+            done();
+        } catch (error) {
+            done(error);
+        }
+    }
+    fetchData(callback)
+});
+
+const fetchPromise = require('./sum')
+
+test('the data is peanut butter', () => {
+    return expect(fetchPromise()).resolves.toBe('peanut butter');
+});
+
+test('the fetch fails with and error', () => {
+    return expect(fetchPromise()).rejects.toThrow('error');
+});
+const fetchPromise = require('./sum')
+
+test('the data is peanut butter', async () => {
+    const data = await fetchPromise();
+    expect(data).toBe('peanut butter');
+})
+
+// A mock function
+test('mock implementation of a basic function', () => {
+    const mock = jest.fn(x => 42 + x);
+    expect(mock(1)).toBe(43);
+    expect(mock).toHaveBeenCalledWith(1);
+})
+*/
+
+test('spying on a method of an object', () => {
+    const video = {
+        play() {
+            return true;
+        },
+    };
+
+    const spy = jest.spyOn(video, 'play');
+    video.play();
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+});
